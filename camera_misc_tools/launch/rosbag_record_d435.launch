@@ -1,0 +1,18 @@
+<launch>
+
+  <arg name="use_script" default="true" />
+
+  <arg name="bag_file_path" default="$(find camera_misc_tools)/bag" />
+  <arg name="bag_file_name" default="d435_sample.bag" />
+
+  <node if="$(arg use_script)" pkg="camera_misc_tools" type="rosbag_record_d435.sh" name="rosbag_record_d435" output="screen" />
+
+  <node unless="$(arg use_script)" pkg="rosbag" type="record" name="rosbag_record_d435" output="screen"
+        args="tf
+              tf_static
+              camera/color/image_rect_color
+              camera/color/camera_info
+              camera/aligned_depth_to_color/image_raw
+              -O $(arg bag_file_path)/$(arg bag_file_name)" />
+
+</launch>

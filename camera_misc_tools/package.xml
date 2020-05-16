@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>ros_misc_tools</name>
+  <name>camera_misc_tools</name>
   <version>0.0.1</version>
-  <description>
-    <p>Metapackage that contains ROS related miscellaneous tool packages</p>
-  </description>
+  <description>ROS camera related miscellaneous tool package</description>
 
   <maintainer email="y-tanaka@jsk.t.u-tokyo.ac.jp">Yoshimaru Tanaka</maintainer>
   <author email="y-tanaka@jsk.t.u-tokyo.ac.jp">Yoshimaru Tanaka</author>
@@ -16,9 +14,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <run_depend>camera_misc_tools</run_depend>
+  <!-- <build_depend></build_depend> -->
 
-  <export>
-    <metapackage/>
-  </export>
+  <run_depend>rosbag</run_depend>
+
 </package>
