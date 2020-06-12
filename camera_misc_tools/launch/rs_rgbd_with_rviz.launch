@@ -1,0 +1,12 @@
+<launch>
+
+  <arg name="gui" default="true"/>
+
+  <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+
+  <node if="$(arg gui)"
+        name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find camera_misc_tools)/rviz/rs_rgbd.rviz"/>
+
+</launch>
