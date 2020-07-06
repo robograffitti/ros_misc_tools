@@ -1,0 +1,21 @@
+<launch>
+
+  <arg name="use_script" default="true" />
+
+  <arg name="bag_file_path" default="$(find camera_misc_tools)/bag" />
+  <arg name="bag_file_name" default="l515_sample.bag" />
+
+  <node if="$(arg use_script)" pkg="camera_misc_tools" type="rosbag_record_l515.sh" name="rosbag_record_l515" output="screen" />
+
+  <node unless="$(arg use_script)" pkg="rosbag" type="record" name="rosbag_record_l515" output="screen"
+        args="tf
+              tf_static
+              camera/depth/camera_info
+              camera/depth/image_rect_raw
+              camera/infra/camera_info
+              camera/infra/image_raw
+              camera/gyro/imu_info
+              camera/gyro/sample
+              -O $(arg bag_file_path)/$(arg bag_file_name)" />
+
+</launch>
