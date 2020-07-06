@@ -1,0 +1,26 @@
+<launch>
+
+  <arg name="use_script" default="true" />
+
+  <arg name="bag_file_path" default="$(find camera_misc_tools)/bag" />
+  <arg name="bag_file_name" default="k4a_sample.bag" />
+
+  <node if="$(arg use_script)" pkg="camera_misc_tools" type="rosbag_record_d435.sh" name="rosbag_record_d435" output="screen" />
+
+  <node unless="$(arg use_script)" pkg="rosbag" type="record" name="rosbag_record_d435" output="screen"
+        args="tf
+              tf_static
+              k4a/rgb/camera_info
+              k4a/rgb/image_raw
+              k4a/rgb_to_depth/camera_info
+              k4a/rgb_to_depth/image_raw
+              k4a/depth/camera_info
+              k4a/depth/image_raw
+              k4a/depth_registered/camera_info
+              k4a/depth_to_rgb/camera_info
+              k4a/depth_to_rgb/image_raw
+              k4a/ir/camera_info
+              k4a/ir/image_raw
+              -O $(arg bag_file_path)/$(arg bag_file_name)" />
+
+</launch>
