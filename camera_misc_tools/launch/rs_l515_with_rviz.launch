@@ -6,6 +6,8 @@
   <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
     <arg name="color_width" value="1280"/>
     <arg name="color_height" value="720"/>
+    <arg name="depth_processing"                value="false"/>
+    <arg name="depth_registered_processing"     value="true"/>
   </include>
 
   <node if="$(arg gui)"

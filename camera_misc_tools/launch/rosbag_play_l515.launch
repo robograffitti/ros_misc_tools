@@ -1,0 +1,42 @@
+<launch>
+
+  <arg name="gui" default="true"/>
+
+  <arg name="bag_file_path" default="$(find camera_misc_tools)/bag" />
+  <arg name="bag_file_name" default="l515_oil_filter_multiple_2020_0710_001.bag" />
+  <node pkg="rosbag" type="play" name="rosbag_play" args="$(arg bag_file_path)/$(arg bag_file_name) --clock --loop" output="screen" />
+
+  <arg name="manager" default="l515_manager"/>
+  <arg name="required" default="false"/>
+
+  <arg name="bond" default="false" />
+  <arg name="respawn" default="$(arg bond)"/>
+
+  <arg name="camera"              default="camera"/>
+  <arg name="tf_prefix"           default="$(arg camera)"/>
+
+  <arg name="rgb" default="color" />
+  <arg name="depth_registered_pub"            default="depth_registered" />
+  <arg name="align_depth"         default="true"/>
+  <arg name="depth_registered"                default="depth_registered" unless="$(arg align_depth)" />
+  <arg name="depth_registered"                default="aligned_depth_to_color" if="$(arg align_depth)" />
+
+  <group ns="$(arg camera)">
+
+    <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" output="screen" required="$(arg required)" respawn="$(arg respawn)" />
+    <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered"
+          args="load depth_image_proc/point_cloud_xyzrgb $(arg manager) $(arg bond)" respawn="$(arg respawn)">
+      <remap from="rgb/image_rect_color"        to="$(arg rgb)/image_rect_color" />
+      <remap from="rgb/camera_info"             to="$(arg rgb)/camera_info" />
+      <remap from="depth_registered/image_rect" to="$(arg depth_registered)/image_raw" />
+      <remap from="depth_registered/points"     to="$(arg depth_registered_pub)/points" />
+    </node>
+
+  </group>
+
+  <node if="$(arg gui)"
+        name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find camera_misc_tools)/rviz/rs_rgbd.rviz"/>
+
+</launch>
